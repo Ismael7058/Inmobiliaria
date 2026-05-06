@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/nav_home">
+
+
+    <fragment
+        android:id="@+id/nav_contrato"
+        android:name="com.blonder.inmobiliaria.ui.contrato.ContratoFragment"
+        android:label="Contrato"
+        tools:layout="@layout/fragment_contrato" />
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.blonder.inmobiliaria.ui.home.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/nav_inmueble"
+        android:name="com.blonder.inmobiliaria.ui.inmueble.InmuebleFragment"
+        android:label="Inmueble"
+        tools:layout="@layout/fragment_inmueble" />
+    <fragment
+        android:id="@+id/nav_inquilino"
+        android:name="com.blonder.inmobiliaria.ui.inquilino.InquilinoFragment"
+        android:label="Inquilino"
+        tools:layout="@layout/fragment_inquilino" />
+    <fragment
+        android:id="@+id/nav_logout"
+        android:name="com.blonder.inmobiliaria.ui.logout.LogoutFragment"
+        android:label="Logout"
+        tools:layout="@layout/fragment_logout" />
+    <fragment
+        android:id="@+id/nav_perfil"
+        android:name="com.blonder.inmobiliaria.ui.perfil.PerfilFragment"
+        android:label="Perfil"
+        tools:layout="@layout/fragment_perfil" />
+</navigation>
