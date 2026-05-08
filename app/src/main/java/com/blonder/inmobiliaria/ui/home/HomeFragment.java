@@ -1,5 +1,6 @@
 package com.blonder.inmobiliaria.ui.home;
 
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -13,11 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.blonder.inmobiliaria.R;
+import com.blonder.inmobiliaria.databinding.FragmentHomeBinding;
+import com.google.android.gms.maps.SupportMapFragment;
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel mViewModel;
-
+    private FragmentHomeBinding fragmentHomeBinding;
     public static HomeFragment newInstance() {
         return new HomeFragment();
     }
@@ -25,14 +28,20 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+        fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false);
         mViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
-        // TODO: Use the ViewModel
-    }
 
+        mViewModel.getMapaActual().observe(this, new Observer<HomeViewModel.MapaActual>() {
+            @Override
+            public void onChanged(HomeViewModel.MapaActual mapaActual) {
+                SupportMapFragment mapFragment =
+                        (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapa);
+                if(mapFragment != null){
+                    mapFragment.getMapAsync(mapaActual);
+                }
+            }
+        });
+        mViewModel.cargarMapa();
+        return fragmentHomeBinding.getRoot();
+    }
 }

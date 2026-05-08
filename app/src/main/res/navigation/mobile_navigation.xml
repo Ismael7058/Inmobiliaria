@@ -14,26 +14,26 @@
     <fragment
         android:id="@+id/nav_home"
         android:name="com.blonder.inmobiliaria.ui.home.HomeFragment"
-        android:label="Home"
+        android:label="@string/menu_inicio"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/nav_inmueble"
         android:name="com.blonder.inmobiliaria.ui.inmueble.InmuebleFragment"
-        android:label="Inmueble"
+        android:label="@string/menu_inmuebles"
         tools:layout="@layout/fragment_inmueble" />
     <fragment
         android:id="@+id/nav_inquilino"
         android:name="com.blonder.inmobiliaria.ui.inquilino.InquilinoFragment"
-        android:label="Inquilino"
+        android:label="@string/menu_inquilinos"
         tools:layout="@layout/fragment_inquilino" />
     <fragment
         android:id="@+id/nav_logout"
         android:name="com.blonder.inmobiliaria.ui.logout.LogoutFragment"
-        android:label="Logout"
+        android:label="@string/menu_logout"
         tools:layout="@layout/fragment_logout" />
     <fragment
         android:id="@+id/nav_perfil"
         android:name="com.blonder.inmobiliaria.ui.perfil.PerfilFragment"
-        android:label="Perfil"
+        android:label="@string/menu_perfil"
         tools:layout="@layout/fragment_perfil" />
 </navigation>
