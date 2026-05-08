@@ -33,14 +33,16 @@
         app:layout_constraintTop_toBottomOf="@+id/tvWelecome" />
 
     <EditText
-        android:id="@+id/editTextText"
+        android:id="@+id/etEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorText"
         android:ems="10"
         android:hint="Correo electrónico"
-        android:textColor="@color/colorText"
         android:inputType="textEmailAddress"
-        android:backgroundTint="@color/colorText"
+        android:minHeight="48dp"
+        android:text="luisprofessor@gmail.com"
+        android:textColor="@color/colorText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -53,18 +55,20 @@
         android:textColor="@color/colorText"
         android:text="Password"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText" />
+        app:layout_constraintTop_toBottomOf="@+id/etEmail" />
 
     <EditText
-        android:id="@+id/editTextText2"
+        android:id="@+id/etPass"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorText"
         android:ems="10"
         android:hint="Contraseña"
-        android:textColor="@color/colorText"
         android:inputType="textPassword"
+        android:minHeight="48dp"
+        android:text="DEEKQW"
+        android:textColor="@color/colorText"
         app:layout_constraintEnd_toEndOf="parent"
-        android:backgroundTint="@color/colorText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
@@ -80,6 +84,6 @@
         android:textColor="@color/colorText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText2" />
+        app:layout_constraintTop_toBottomOf="@+id/etPass" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
