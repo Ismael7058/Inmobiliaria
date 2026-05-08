@@ -31,7 +31,7 @@ public class HomeFragment extends Fragment {
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false);
         mViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
-        mViewModel.getMapaActual().observe(this, new Observer<HomeViewModel.MapaActual>() {
+        mViewModel.getMapaActual().observe(getViewLifecycleOwner(), new Observer<HomeViewModel.MapaActual>() {
             @Override
             public void onChanged(HomeViewModel.MapaActual mapaActual) {
                 SupportMapFragment mapFragment =
