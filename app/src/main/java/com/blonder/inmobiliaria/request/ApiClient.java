@@ -18,7 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.*;
 
 public class ApiClient {
-    public final static String BASE_URL = "https://capacitacion.alwaysdata.ne9t/";
+    public final static String BASE_URL = "https://capacitacion.alwaysdata.net/";
 
     public static MiServicioInmobiliaria getServicio() {
         Gson gson = new GsonBuilder().setLenient().create();
@@ -37,7 +37,7 @@ public class ApiClient {
 
         /// Actualiza la información del propietario.
         @PUT("api/Propietarios/actualizar")
-        Call<Propietario> obtenerInmuebles(@Header("Authorization") String token, @Body Propietario propietario);
+        Call<Propietario> actualizarPropietario(@Header("Authorization") String token, @Body Propietario propietario);
 
         /// Envía un correo para reestablecer la contraseña.
         @FormUrlEncoded

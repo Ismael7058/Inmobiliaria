@@ -27,4 +27,24 @@
     <string name="image_view_item_transform_content_description">Represents an image view in the
         item
     </string>
+
+
+    <string name="label_nombre">Nombre</string>
+    <string name="label_apellido">Apellido</string>
+    <string name="label_dni">DNI</string>
+    <string name="label_telefono">Telefono</string>
+    <string name="label_email">Email</string>
+
+    <string name="btn_actualizar">Actualizar</string>
+    <string name="btn_guardar">Guardar</string>
+
+    <string name="placeholder_nombre">Luis...</string>
+    <string name="placeholder_apellido">Mercado...</string>
+    <string name="placeholder_dni">12345678</string>
+    <string name="placeholder_telefono">123456789</string>
+    <string name="placeholder_email">example@example.com</string>
+
+
+
+
 </resources>
