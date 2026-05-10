@@ -2,6 +2,7 @@ package com.blonder.inmobiliaria.ui.perfil;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Patterns;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,9 +35,9 @@ public class PerfilViewModel extends AndroidViewModel {
         return propietarioMutable;
     }
 
-    public void cargarPropietario(){
+    public void cargarPropietario() {
         String accessToken = ApiClient.leerToken(context);
-        if(accessToken == null){
+        if (accessToken == null) {
             return;
         }
         ApiClient.MiServicioInmobiliaria service = ApiClient.getServicio();
@@ -64,20 +65,43 @@ public class PerfilViewModel extends AndroidViewModel {
         });
     }
 
-    public void editarPropietario(String nombre, String apellido, String dni, String telefono, String email){
-        Propietario actual = propietarioMutable.getValue();
+    public void editarPropietario(String nombre, String apellido, String dni, String telefono, String email) {
+
+        if (nombre == null || nombre.isEmpty() || apellido == null || apellido.isEmpty() || dni == null || dni.isEmpty() || telefono == null || telefono.isEmpty() || email == null || email.isEmpty()) {
+            Toast.makeText(getApplication(), "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        int dniInt;
+        try {
+            dniInt = Integer.parseInt(dni);
+        } catch (NumberFormatException e) {
+            Toast.makeText(getApplication(), "El DNI solo acepta numeros", Toast.LENGTH_SHORT).show();
+            return;
+
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(getApplication(), "El email no es válido", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         Propietario propietarioEditado = new Propietario();
-
         propietarioEditado.setNombre(nombre);
         propietarioEditado.setApellido(apellido);
-        propietarioEditado.setDni(Integer.parseInt(dni));
+        propietarioEditado.setDni(dniInt);
         propietarioEditado.setTelefono(telefono);
         propietarioEditado.setEmail(email);
 
+        Propietario actual = propietarioMutable.getValue();
+        if (actual == null || actual.equals(propietarioEditado)) {
+            Toast.makeText(getApplication(), "No hay cambios", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         String accessToken = ApiClient.leerToken(context);
-        if(accessToken == null){
+        if (accessToken == null) {
+            Toast.makeText(getApplication(), "No hay token", Toast.LENGTH_SHORT).show();
             return;
         }
         ApiClient.MiServicioInmobiliaria service = ApiClient.getServicio();
@@ -91,7 +115,7 @@ public class PerfilViewModel extends AndroidViewModel {
                         Toast.makeText(getApplication(), "El propietario no existe", Toast.LENGTH_LONG).show();
                         return;
                     }
-                    Toast.makeText(getApplication(), "El propietario a sido editado", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplication(), "El propietario se edito correctamente", Toast.LENGTH_LONG).show();
                     propietarioMutable.postValue(propietario);
                 } else {
                     Toast.makeText(getApplication(), "Error al editar el propietario", Toast.LENGTH_LONG).show();
