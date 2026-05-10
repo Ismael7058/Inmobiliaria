@@ -1,5 +1,8 @@
 package com.blonder.inmobiliaria.Models;
 
+import androidx.annotation.Nullable;
+import java.util.Objects;
+
 public class Propietario {
     private int idPropietario;
     private String nombre;
@@ -87,5 +90,22 @@ public class Propietario {
                 ", email='" + email + '\'' +
                 ", clave='" + clave + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(@Nullable Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Propietario that = (Propietario) o;
+        return dni == that.dni &&
+                Objects.equals(nombre, that.nombre) &&
+                Objects.equals(apellido, that.apellido) &&
+                Objects.equals(telefono, that.telefono) &&
+                Objects.equals(email, that.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nombre, apellido, dni, telefono, email);
     }
 }
