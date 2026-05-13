@@ -1,5 +1,7 @@
 package com.blonder.inmobiliaria.ui.inmueble;
 
+import static com.blonder.inmobiliaria.request.ApiClient.BASE_URL;
+
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.blonder.inmobiliaria.Models.Inmueble;
 import com.blonder.inmobiliaria.R;
 import com.blonder.inmobiliaria.databinding.ItemInmubleBinding;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -43,6 +46,12 @@ public class InmuebleAdapter extends RecyclerView.Adapter<InmuebleAdapter.ViewHo
 
         holder.direccion.setText(inmueble.getDireccion());
         holder.ivInmueble.setImageResource(R.drawable.ic_launcher_background);
+        Glide.with(inflater.getContext())
+                        .load(BASE_URL + inmueble.getImagen())
+                        .placeholder(null)
+                        .error(R.drawable.inmueble_default)
+                        .into(holder.ivInmueble);
+
         holder.btnDetalle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
