@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blonder.inmobiliaria.Models.Inmueble;
@@ -52,25 +53,14 @@ public class InmuebleAdapter extends RecyclerView.Adapter<InmuebleAdapter.ViewHo
                         .error(R.drawable.inmueble_default)
                         .into(holder.ivInmueble);
 
-        holder.btnDetalle.setOnClickListener(new View.OnClickListener() {
+        holder.contenedor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "Accion para rediregir a detalle", Toast.LENGTH_LONG).show();
+                Toast.makeText(v.getContext(), "Accion para rediregir a detalle", Toast.LENGTH_SHORT).show();
             }
         });
 
-        if (inmueble.isTieneContratoVigente()){
-            holder.btnContrato.setVisibility(View.VISIBLE);
-            holder.btnContrato.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(v.getContext(), "Accion para rediregir a contrato", Toast.LENGTH_LONG).show();
-                }
-            });
-        }
-        else {
-            holder.btnContrato.setVisibility(View.GONE);
-        }
+
 
     }
 
@@ -84,15 +74,13 @@ public class InmuebleAdapter extends RecyclerView.Adapter<InmuebleAdapter.ViewHo
         private ItemInmubleBinding binding;
         ImageView ivInmueble;
         TextView direccion;
-        Button btnDetalle;
-        Button btnContrato;
+        ConstraintLayout contenedor;
         public ViewHolerInmueble(@NonNull View itemView) {
             super(itemView);
             binding = ItemInmubleBinding.bind(itemView);
             ivInmueble = binding.ivInmueble;
             direccion = binding.direccion;
-            btnDetalle = binding.btnDetalle;
-            btnContrato = binding.btnContrato;
+            contenedor = binding.contenedor;
         }
 
 
