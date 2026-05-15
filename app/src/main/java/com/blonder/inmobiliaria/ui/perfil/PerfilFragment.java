@@ -8,12 +8,14 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.blonder.inmobiliaria.Models.Propietario;
+import com.blonder.inmobiliaria.R;
 import com.blonder.inmobiliaria.databinding.FragmentPerfilBinding;
 
 public class PerfilFragment extends Fragment {
@@ -75,6 +77,12 @@ public class PerfilFragment extends Fragment {
                         binding.email.getText().toString()
                 );
             }
+        });
+        binding.btnAbrirPassword.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+
+
+            Navigation.findNavController(v).navigate(R.id.nav_password, bundle);
         });
         viewModel.cargarPropietario();
     }
