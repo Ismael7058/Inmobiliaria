@@ -9,16 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.blonder.inmobiliaria.Models.Inmueble;
-import com.blonder.inmobiliaria.R;
 import com.blonder.inmobiliaria.databinding.FragmentInmuebleBinding;
-import com.google.android.material.button.MaterialButtonToggleGroup;
 
 import java.util.List;
 
@@ -70,6 +65,13 @@ public class InmuebleFragment extends Fragment {
                 binding.btnDisponibles.setEnabled(false);
                 binding.btnTodos.setEnabled(true);
                 viewModel.setListaDisponibles(false);
+            }
+        });
+
+        binding.flotante.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.nuevoInmueble();
             }
         });
 

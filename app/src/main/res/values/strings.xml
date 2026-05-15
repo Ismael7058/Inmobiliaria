@@ -43,8 +43,7 @@
     <string name="placeholder_dni">12345678</string>
     <string name="placeholder_telefono">123456789</string>
     <string name="placeholder_email">example@example.com</string>
-
-
+    <string name="flotante">Agregar inmueble</string>
 
 
 </resources>

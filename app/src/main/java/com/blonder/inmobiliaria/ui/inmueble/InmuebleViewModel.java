@@ -121,4 +121,8 @@ public class InmuebleViewModel extends AndroidViewModel {
         });
     }
 
+    public void nuevoInmueble (){
+        Toast.makeText(getApplication(), "Accion para redirigir a agregar un inmueble", Toast.LENGTH_SHORT).show();
+    }
+
 }
