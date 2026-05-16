@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Inmobiliaria</string>
-    <string name="welcome_message">Bienvenido a AppInmo</string>
+    <string name="welcome_message">Bienvenido a </string>
 
+    <string name="nameApp"> AppInmo</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
