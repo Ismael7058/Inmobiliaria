@@ -52,11 +52,15 @@ public class InmuebleViewModel extends AndroidViewModel {
         if (accessToken == null) {
             return;
         }
-        if (listaDisponibles.getValue()){
+
+        Boolean esDisponibles = listaDisponibles.getValue();
+
+        if (esDisponibles == null || esDisponibles) {
             consultarTodosLosInmuebles(accessToken);
-        } else {
-            consultarInmueblesAlquilados(accessToken);
+            return;
         }
+
+        consultarInmueblesAlquilados(accessToken);
     }
 
     public void cargarLista(boolean disponibles){
@@ -64,11 +68,12 @@ public class InmuebleViewModel extends AndroidViewModel {
         if (accessToken == null) {
             return;
         }
+
         if (disponibles){
             consultarTodosLosInmuebles(accessToken);
-        } else {
-            consultarInmueblesAlquilados(accessToken);
         }
+        consultarInmueblesAlquilados(accessToken);
+
     }
 
     private void consultarTodosLosInmuebles(String accessToken) {
@@ -76,22 +81,21 @@ public class InmuebleViewModel extends AndroidViewModel {
         call.enqueue(new Callback<List<Inmueble>>() {
             @Override
             public void onResponse(Call<List<Inmueble>> call, Response<List<Inmueble>> response) {
-                if (response.isSuccessful()){
-                    List<Inmueble> inmuebles = response.body();
-                    if (inmuebles == null){
-                        Toast.makeText(getApplication(), "No hay inmuebles", Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                    listaInmuebles.postValue(inmuebles);
-
-                } else {
-                    Toast.makeText(getApplication(), "Error al obtener los inmuebles", Toast.LENGTH_LONG).show();
+                if(!response.isSuccessful()){
+                    Toast.makeText(getApplication(), "Error al obtener los inmuebles", Toast.LENGTH_SHORT).show();
                 }
+
+                List<Inmueble> inmuebles = response.body();
+                if (inmuebles == null){
+                    Toast.makeText(getApplication(), "No hay inmuebles", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                listaInmuebles.postValue(inmuebles);
             }
 
             @Override
             public void onFailure(Call<List<Inmueble>> call, Throwable t) {
-                Toast.makeText(getApplication(), "Error al obtener los inmuebles", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplication(), "Error al obtener los inmuebles", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -101,22 +105,21 @@ public class InmuebleViewModel extends AndroidViewModel {
         call.enqueue(new Callback<List<Inmueble>>() {
             @Override
             public void onResponse(Call<List<Inmueble>> call, Response<List<Inmueble>> response) {
-                if (response.isSuccessful()){
-                    List<Inmueble> inmuebles = response.body();
-                    if (inmuebles == null){
-                        Toast.makeText(getApplication(), "No hay inmuebles", Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                    listaInmuebles.postValue(inmuebles);
-
-                } else {
-                    Toast.makeText(getApplication(), "Error al obtener los inmuebles con contratos", Toast.LENGTH_LONG).show();
+                if(!response.isSuccessful()){
+                    Toast.makeText(getApplication(), "Error al obtener los inmuebles con contratos", Toast.LENGTH_SHORT).show();
                 }
+
+                List<Inmueble> inmuebles = response.body();
+                if (inmuebles == null){
+                    Toast.makeText(getApplication(), "No hay inmuebles", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                listaInmuebles.postValue(inmuebles);
             }
 
             @Override
             public void onFailure(Call<List<Inmueble>> call, Throwable t) {
-                Toast.makeText(getApplication(), "Error al obtener los inmuebles con contratos", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplication(), "Error al obtener los inmuebles con contratos", Toast.LENGTH_SHORT).show();
             }
         });
     }
