@@ -1,4 +1,4 @@
-package com.blonder.inmobiliaria.ui.inmueble;
+package com.blonder.inmobiliaria.ui.listarInmuebles;
 
 import static com.blonder.inmobiliaria.request.ApiClient.BASE_URL;
 
@@ -6,7 +6,6 @@ import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,11 +21,11 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-public class InmuebleAdapter extends RecyclerView.Adapter<InmuebleAdapter.ViewHolerInmueble> {
+public class ListarInmueblesAdapter extends RecyclerView.Adapter<ListarInmueblesAdapter.ViewHolerInmueble> {
     private List<Inmueble> inmuebleList;
     private LayoutInflater inflater;
 
-    public InmuebleAdapter(List<Inmueble> inmuebleList, LayoutInflater inflater) {
+    public ListarInmueblesAdapter(List<Inmueble> inmuebleList, LayoutInflater inflater) {
         this.inmuebleList = inmuebleList;
         this.inflater = inflater;
     }
