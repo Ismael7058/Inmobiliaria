@@ -71,6 +71,7 @@ public class ListarInmueblesViewModel extends AndroidViewModel {
 
         if (disponibles){
             consultarTodosLosInmuebles(accessToken);
+            return;
         }
         consultarInmueblesAlquilados(accessToken);
 
