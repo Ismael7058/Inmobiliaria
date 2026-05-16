@@ -36,6 +36,7 @@
     <string name="label_email">Email</string>
 
     <string name="btn_actualizar">Actualizar</string>
+    <string name="btn_editar">Editar</string>
     <string name="btn_guardar">Guardar</string>
 
     <string name="placeholder_nombre">Luis...</string>
@@ -46,6 +47,15 @@
     <string name="flotante">Agregar inmueble</string>
     <string name="contratos_vigentes">Contratos Vigentes</string>
     <string name="text_todos">Todos</string>
+
+
+</resources>
+    <string name="cambiar_contrasena">Cambiar Contraseña</string>
+
+    <string name="label_anterior_password">Contraseña Anterior</string>
+    <string name="label_nueva_password">Nueva Contraseña</string>
+    <string name="hint_anterior_password">Ingrese contraseña actual</string>
+    <string name="hint_nueva_password">Mínimo 6 caracteres</string>
 
 
 </resources>
