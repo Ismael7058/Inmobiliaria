@@ -44,6 +44,10 @@
     <string name="placeholder_dni">12345678</string>
     <string name="placeholder_telefono">123456789</string>
     <string name="placeholder_email">example@example.com</string>
+    <string name="flotante">Agregar inmueble</string>
+    <string name="contratos_vigentes">Contratos Vigentes</string>
+    <string name="text_todos">Todos</string>
+
     <string name="cambiar_contrasena">Cambiar Contraseña</string>
 
     <string name="label_anterior_password">Contraseña Anterior</string>

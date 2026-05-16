@@ -18,9 +18,9 @@
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/nav_inmueble"
-        android:name="com.blonder.inmobiliaria.ui.inmueble.InmuebleFragment"
+        android:name="com.blonder.inmobiliaria.ui.listarInmuebles.ListarInmueblesFragment"
         android:label="@string/menu_inmuebles"
-        tools:layout="@layout/fragment_inmueble" />
+        tools:layout="@layout/fragment_listar_inmuebles" />
     <fragment
         android:id="@+id/nav_inquilino"
         android:name="com.blonder.inmobiliaria.ui.inquilino.InquilinoFragment"
