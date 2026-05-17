@@ -13,10 +13,12 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.blonder.inmobiliaria.Models.Propietario;
 import com.blonder.inmobiliaria.R;
 import com.blonder.inmobiliaria.databinding.FragmentPerfilBinding;
+import com.google.android.material.navigation.NavigationView;
 
 public class PerfilFragment extends Fragment {
     private FragmentPerfilBinding binding;
@@ -51,6 +53,16 @@ public class PerfilFragment extends Fragment {
                 binding.telefono.setEnabled(false);
                 binding.btnActualizar.setVisibility(View.VISIBLE);
                 binding.btnGuardar.setVisibility(View.INVISIBLE);
+
+                NavigationView navigationView = requireActivity().findViewById(R.id.nav_view);
+                if (navigationView != null) {
+                    View headerView = navigationView.getHeaderView(0);
+                    TextView name = headerView.findViewById(R.id.nameLabelHeader);
+                    TextView mail = headerView.findViewById(R.id.tvMailHeader);
+
+                    name.setText(propietario.getNombre().concat(", ").concat(propietario.getApellido()));
+                    mail.setText(propietario.getEmail());
+                }
             }
         });
         binding.btnActualizar.setOnClickListener(new View.OnClickListener() {
@@ -75,6 +87,7 @@ public class PerfilFragment extends Fragment {
                         binding.dni.getText().toString(),
                         binding.telefono.getText().toString(),
                         binding.email.getText().toString()
+
                 );
             }
         });
