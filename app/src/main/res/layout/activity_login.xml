@@ -15,11 +15,26 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:text="@string/welcome_message"
+        android:textColor="@color/colorText"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:textColor="@color/colorText"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.245"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvWelecome2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="@string/nameApp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.123"
+        app:layout_constraintStart_toEndOf="@+id/tvWelecome"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -36,7 +51,7 @@
         android:id="@+id/etEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorText"
+        android:backgroundTint="@color/colorPrimary"
         android:ems="10"
         android:hint="Correo electrónico"
         android:inputType="textEmailAddress"
@@ -61,7 +76,7 @@
         android:id="@+id/etPass"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorText"
+        android:backgroundTint="@color/colorPrimary"
         android:ems="10"
         android:hint="Contraseña"
         android:inputType="textPassword"

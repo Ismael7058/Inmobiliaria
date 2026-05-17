@@ -16,9 +16,13 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorHeader"
+            android:background="@color/colorBackground"
             app:titleTextColor="@color/colorText"
             app:popupTheme="@style/Theme.Inmobiliaria" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#47B369" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
