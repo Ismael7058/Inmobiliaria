@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.Objects;
 
+
 public class InmuebleFragment extends Fragment {
 
     private InmuebleViewModel vm;
@@ -35,7 +36,7 @@ public class InmuebleFragment extends Fragment {
         vm = new ViewModelProvider(this).get(InmuebleViewModel.class);
         //Observer que carga el inmueble en la vista
         vm.getInmueble().observe(getViewLifecycleOwner(), inmueble -> {
-            Glide.with(Objects.requireNonNull(getContext())).load(BASE_URL + inmueble.getImagen()).placeholder(null).error(R.drawable.inmueble_default).into(b.ivImagenInmueble);
+            Glide.with(requireContext()).load(BASE_URL + inmueble.getImagen()).placeholder(null).error(R.drawable.inmueble_default).into(b.ivImagenInmueble);
 
             b.etDireccion.setText(inmueble.getDireccion());
             b.etUso.setText(inmueble.getUso());
