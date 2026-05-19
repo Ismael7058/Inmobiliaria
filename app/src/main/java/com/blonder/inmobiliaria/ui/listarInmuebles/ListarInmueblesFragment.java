@@ -8,11 +8,15 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.blonder.inmobiliaria.Models.Inmueble;
+import com.blonder.inmobiliaria.R;
 import com.blonder.inmobiliaria.databinding.FragmentListarInmueblesBinding;
 
 import java.util.List;
@@ -30,7 +34,7 @@ public class ListarInmueblesFragment extends Fragment {
 
         binding = FragmentListarInmueblesBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(this).get(ListarInmueblesViewModel.class);
-        
+
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         binding.listItem.setLayoutManager(gridLayoutManager);
 
@@ -45,7 +49,15 @@ public class ListarInmueblesFragment extends Fragment {
         viewModel.getListaInmuebles().observe(getViewLifecycleOwner(), new Observer<List<Inmueble>>() {
             @Override
             public void onChanged(List<Inmueble> inmuebles) {
-                ListarInmueblesAdapter adapter = new ListarInmueblesAdapter(inmuebles, getLayoutInflater());
+                ListarInmueblesAdapter adapter = new ListarInmueblesAdapter(inmuebles, getLayoutInflater(), new ListarInmueblesAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(Inmueble inmueble) {
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("inmueble", inmueble);
+                        assert getView() != null;
+                        Navigation.findNavController(getView()).navigate(R.id.nav_inmuebleReal, bundle);
+                    }
+                });
                 binding.listItem.setAdapter(adapter);
             }
         });
@@ -67,11 +79,11 @@ public class ListarInmueblesFragment extends Fragment {
                 viewModel.setListaDisponibles(false);
             }
         });
-
+        //Boton agregar inmueble
         binding.flotante.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.nuevoInmueble();
+                Navigation.findNavController(v).navigate(R.id.nav_inmuebleReal, null);
             }
         });
 

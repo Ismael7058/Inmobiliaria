@@ -1,6 +1,8 @@
 package com.blonder.inmobiliaria.Models;
 
-public class Inmueble
+import java.io.Serializable;
+
+public class Inmueble implements Serializable
 {
     private int idInmueble;
     private String direccion;
