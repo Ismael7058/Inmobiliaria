@@ -4,17 +4,27 @@ import static android.view.View.*;
 
 import static com.blonder.inmobiliaria.request.ApiClient.BASE_URL;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.blonder.inmobiliaria.Models.Inmueble;
@@ -29,12 +39,29 @@ public class InmuebleFragment extends Fragment {
 
     private InmuebleViewModel vm;
     private FragmentInmuebleBinding b;
-
+    private ActivityResultLauncher<Intent> activityResultLauncher;
+    private Intent intent;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         b = FragmentInmuebleBinding.inflate(inflater, container, false);
         vm = new ViewModelProvider(this).get(InmuebleViewModel.class);
-        //Observer que carga el inmueble en la vista
+        abrirGaleria();
+        ///  Listener para abrir la galeria del telefono
+        b.ivImagenInmueble.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                activityResultLauncher.launch(intent);
+            }
+        });
+        ///  Observer que carga la imagen en la vista
+        vm.getImagenUri().observe(getViewLifecycleOwner(), new Observer<Uri>() {
+            @Override
+            public void onChanged(Uri uri) {
+                b.ivImagenInmueble.setImageURI(uri);
+            }
+        });
+        /// Observer que carga el inmueble en la vista
+
         vm.getInmueble().observe(getViewLifecycleOwner(), inmueble -> {
             Glide.with(requireContext()).load(BASE_URL + inmueble.getImagen()).placeholder(null).error(R.drawable.inmueble_default).into(b.ivImagenInmueble);
 
@@ -46,27 +73,53 @@ public class InmuebleFragment extends Fragment {
             b.etLatitud.setText(String.valueOf(inmueble.getLatitud()));
             b.etLongitud.setText(String.valueOf(inmueble.getLongitud()));
             b.etPrecio.setText(String.valueOf(inmueble.getValor()));
+            b.cbDisponible.setEnabled(true);// Habilita campo disponible
             b.cbDisponible.setChecked(inmueble.isDisponible());
             b.cbContratoVigente.setChecked(inmueble.isTieneContratoVigente());
         });
         /// Listener del Boton Crear
         b.btnCrearInmueble.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Lógica para crear inmueble", Toast.LENGTH_SHORT).show();
+            vm.registrarInmueble(
+                    b.etDireccion.getText().toString(),
+                    b.etUso.getText().toString(),
+                    b.etTipo.getText().toString(),
+                    b.etAmbientes.getText().toString(),
+                    b.etSuperficie.getText().toString(),
+                    b.etLatitud.getText().toString(),
+                    b.etLongitud.getText().toString(),
+                    b.etPrecio.getText().toString(),
+                    b.cbDisponible.isChecked(),
+                    b.cbContratoVigente.isChecked()
+            );
         });
         /// Listener del Boton Actualizar
         b.btnEditarInmueble.setOnClickListener(v -> {
-            setEnabledSupreme(true);
+            setEnabledSupreme(true, true);
             setVisibleSupreme(2);
         });
         /// Listener del Boton Guardar
         b.btnGuardarInmueble.setOnClickListener(v -> {
             Toast.makeText(getContext(), "Lógica para guardar cambios", Toast.LENGTH_SHORT).show();
         });
-
+        /// Listener del CheckBox para cambiar la disponibilidad
+        b.cbDisponible.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean checked = b.cbDisponible.isChecked();
+                vm.actualizarDisponible(checked);
+            }
+        });
+        ///  Listener que muestra un mensaje en pantalla, pueden ser errores o confirmaciones
+        vm.getMessageToView().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+            }
+        });
         Bundle bundle = getArguments();
         //Modo Crear
         if (bundle == null || !bundle.containsKey("inmueble")) {
-            setEnabledSupreme(true);
+            setEnabledSupreme(true, true);
             b.etDireccion.requestFocus();
             setVisibleSupreme(3);
             return b.getRoot();
@@ -78,14 +131,14 @@ public class InmuebleFragment extends Fragment {
             return b.getRoot();
         }
         vm.cargarInmueble(inmueble);
-        setEnabledSupreme(false);
+        setEnabledSupreme(false,false);
         setVisibleSupreme(1);
         return b.getRoot();
     }
 
 
     //Funcion auxiliar para habilitar o deshabilitar los campos de texto
-    private void setEnabledSupreme(boolean estado) {
+    private void setEnabledSupreme(boolean estado, boolean afectarCbDisponible) {
         b.etDireccion.setEnabled(estado);
         b.etUso.setEnabled(estado);
         b.etTipo.setEnabled(estado);
@@ -94,14 +147,29 @@ public class InmuebleFragment extends Fragment {
         b.etLatitud.setEnabled(estado);
         b.etLongitud.setEnabled(estado);
         b.etPrecio.setEnabled(estado);
-        b.cbDisponible.setEnabled(estado);
+        if(afectarCbDisponible) //Habilita campo disponible
+            b.cbDisponible.setEnabled(estado);
         b.cbContratoVigente.setEnabled(estado);//falta ver como se comporta el back del contrato
     }
 
     //Funcion auxiliar para cambiar la visibilidad de los botones
     private void setVisibleSupreme(int eleccion) {
-        b.btnEditarInmueble.setVisibility(eleccion == 1 ? VISIBLE : GONE);
+        ///  Invierto el valor para que no se muestre ya que no existe el editar inmueble
+        b.btnEditarInmueble.setVisibility(eleccion == 1 ? GONE : VISIBLE);
         b.btnGuardarInmueble.setVisibility(eleccion == 2 ? VISIBLE : GONE);
         b.btnCrearInmueble.setVisibility(eleccion == 3 ? VISIBLE : GONE);
+    }
+    ///  Funcion auxiliar para abrir la galeria del telefono y setear la imagen en el mutable
+    private void abrirGaleria(){
+        intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        activityResultLauncher =
+                registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                        new ActivityResultCallback<ActivityResult>() {
+                            @Override
+                            public void onActivityResult(ActivityResult o) {
+                                vm.recibirFotos(o);
+                            }
+                        }) ;
+
     }
 }

@@ -97,6 +97,7 @@ public class PerfilFragment extends Fragment {
 
             Navigation.findNavController(v).navigate(R.id.nav_password, bundle);
         });
+
         viewModel.cargarPropietario();
     }
 }
