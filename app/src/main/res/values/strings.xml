@@ -76,5 +76,15 @@
     <string name="placeholder_latitud">-34.123548</string>
     <string name="placeholder_longitud">-66.456784</string>
     <string name="placeholder_precio">500000</string>
+    <string-array name="opciones_uso">
+        <item>Residencial</item>
+        <item>Comercial</item>
+    </string-array>
 
+    <string-array name="opciones_tipo">
+        <item>Casa</item>
+        <item>Departamento</item>
+        <item>Local</item>
+        <item>Depósito</item>
+    </string-array>
 </resources>

@@ -40,10 +40,12 @@ public class InmuebleViewModel extends AndroidViewModel {
     private MutableLiveData<Uri> mImageUri = new MutableLiveData<>();
     private MutableLiveData<Inmueble> mInmueble = new MutableLiveData<>();
     private MutableLiveData<String> messageToView = new MutableLiveData<>();
+    private MutableLiveData<Boolean> guardadoExitoso = new MutableLiveData<>();
     private Context context;
     public InmuebleViewModel(@NonNull Application application) {
         super(application);
         context = application.getApplicationContext();
+        guardadoExitoso.setValue(false);
     }
     public LiveData<Uri> getImagenUri(){
 
@@ -55,7 +57,12 @@ public class InmuebleViewModel extends AndroidViewModel {
         }
         return mInmueble;
     }
-
+    public void setGuardadoExitoso(boolean guardadoExitoso){
+        this.guardadoExitoso.setValue(guardadoExitoso);
+    }
+    public LiveData<Boolean> getGuardadoExitoso() {
+        return guardadoExitoso;
+    }
     public void cargarInmueble(Inmueble inmueble) {
         mInmueble.setValue(inmueble);
     }
@@ -145,12 +152,13 @@ public class InmuebleViewModel extends AndroidViewModel {
                 || !resultadoValidacion.isValido()
         ) {
             setMessageToView("Todos los campos son obligatorios");
+            setGuardadoExitoso(false);
             return;
         }
-        if(mImageUri.getValue() == null) {
-            setMessageToView("Debe seleccionar una imagen");
-            return;
-        }
+//        if(mImageUri.getValue() == null) {
+//            setMessageToView("Debe seleccionar una imagen");
+//            return;
+//        }
         //////////////////////////////////////
         Inmueble inmuebleCreated = new Inmueble();
         inmuebleCreated.setDireccion(direccion);
@@ -174,6 +182,7 @@ public class InmuebleViewModel extends AndroidViewModel {
         String token = ApiClient.leerToken(context);
         if( token == null){
             setMessageToView("No hay token");
+            setGuardadoExitoso(false);
             return;
         }
         byte[] foto = transformarImagen(); /// Se obtiene los bytes de la imagen
@@ -184,19 +193,22 @@ public class InmuebleViewModel extends AndroidViewModel {
         MultipartBody.Part imagenPart = MultipartBody.Part.createFormData("imagen", "imagen.jpg",
                 fotoBody);/// Se crea el multipart body de la imagen
         ApiClient.MiServicioInmobiliaria service = ApiClient.getServicio(); /// Se crea el servicio
-         service.cargarInmueble(token,imagenPart,inmuebleBody).enqueue(new Callback<Inmueble>() {
-             @Override
-             public void onResponse(Call<Inmueble> call, Response<Inmueble> response) {
-                 if(response.isSuccessful()){
-                     setMessageToView("El inmueble se agrego correctamente");
-                 }else{
-                     setMessageToView("Error al agregar el inmueble");
-                 }
-             }
+        service.cargarInmueble(token,imagenPart,inmuebleBody).enqueue(new Callback<Inmueble>() {
+            @Override
+            public void onResponse(Call<Inmueble> call, Response<Inmueble> response) {
+                if(response.isSuccessful()){
+                    setMessageToView("El inmueble se agrego correctamente");
+                    setGuardadoExitoso(true);
+                }else{
+                    setMessageToView("Error al agregar el inmueble");
+                    setGuardadoExitoso(false);
+                }
+            }
 
              @Override
              public void onFailure(Call<Inmueble> call, Throwable t) {
                 setMessageToView("Error al agregar el inmueble: "+ t.getMessage());
+                setGuardadoExitoso(false);
              }
          });
     }
@@ -284,18 +296,40 @@ public class InmuebleViewModel extends AndroidViewModel {
         }
     }
     ///  Funcion para obtener la imagen de la galeria y convertirla a byte array
-    private byte[] transformarImagen(){
-        try{
+//    private byte[] transformarImagen(){
+//        try{
+//            Uri uri = mImageUri.getValue();
+//            //Crea un canal para leer la imagen
+//            InputStream inputStream = getApplication().getContentResolver().openInputStream(uri);
+//            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//            bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+//            return byteArrayOutputStream.toByteArray();
+//        }catch (FileNotFoundException er){
+//            setMessageToView("No ha seleccionado una foto");
+//            return new byte[]{};
+//        }
+//    }
+    private byte[] transformarImagen() {
+        try {
             Uri uri = mImageUri.getValue();
-            //Crea un canal para leer la imagen
-            InputStream inputStream = getApplication().getContentResolver().openInputStream(uri);
-            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+            Bitmap bitmap;
+            if (uri != null) {
+                InputStream inputStream = getApplication().getContentResolver().openInputStream(uri);
+                bitmap = BitmapFactory.decodeStream(inputStream);
+            } else {
+                bitmap = BitmapFactory.decodeResource(getApplication().getResources(), com.blonder.inmobiliaria.R.drawable.inmueble_default);
+            }
+            if (bitmap == null) {
+                return new byte[]{};
+            }
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
             return byteArrayOutputStream.toByteArray();
-        }catch (FileNotFoundException er){
-            setMessageToView("No ha seleccionado una foto");
+        } catch (FileNotFoundException er) {
+            setMessageToView("Error al procesar la imagen del inmueble");
             return new byte[]{};
         }
     }
+
 }

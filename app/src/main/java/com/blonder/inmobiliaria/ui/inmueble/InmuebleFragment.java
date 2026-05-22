@@ -19,11 +19,13 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
@@ -66,8 +68,9 @@ public class InmuebleFragment extends Fragment {
             Glide.with(requireContext()).load(BASE_URL + inmueble.getImagen()).placeholder(null).error(R.drawable.inmueble_default).into(b.ivImagenInmueble);
 
             b.etDireccion.setText(inmueble.getDireccion());
-            b.etUso.setText(inmueble.getUso());
-            b.etTipo.setText(inmueble.getTipo());
+            b.SpinnerUso.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, new String[]{inmueble.getUso()}));
+            b.SpinnerTipo.setAdapter(new ArrayAdapter<>(requireContext(),
+                    android.R.layout.simple_spinner_item, new String[]{inmueble.getTipo()}));
             b.etAmbientes.setText(String.valueOf(inmueble.getAmbientes()));
             b.etSuperficie.setText(String.valueOf(inmueble.getSuperficie()));
             b.etLatitud.setText(String.valueOf(inmueble.getLatitud()));
@@ -81,8 +84,8 @@ public class InmuebleFragment extends Fragment {
         b.btnCrearInmueble.setOnClickListener(v -> {
             vm.registrarInmueble(
                     b.etDireccion.getText().toString(),
-                    b.etUso.getText().toString(),
-                    b.etTipo.getText().toString(),
+                    b.SpinnerUso.getSelectedItem().toString(),
+                    b.SpinnerTipo.getSelectedItem().toString(),
                     b.etAmbientes.getText().toString(),
                     b.etSuperficie.getText().toString(),
                     b.etLatitud.getText().toString(),
@@ -107,6 +110,14 @@ public class InmuebleFragment extends Fragment {
             public void onClick(View view) {
                 boolean checked = b.cbDisponible.isChecked();
                 vm.actualizarDisponible(checked);
+            }
+        });
+        vm.getGuardadoExitoso().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if(aBoolean){
+                    Navigation.findNavController(b.getRoot()).popBackStack();
+                }
             }
         });
         ///  Listener que muestra un mensaje en pantalla, pueden ser errores o confirmaciones
@@ -140,8 +151,8 @@ public class InmuebleFragment extends Fragment {
     //Funcion auxiliar para habilitar o deshabilitar los campos de texto
     private void setEnabledSupreme(boolean estado, boolean afectarCbDisponible) {
         b.etDireccion.setEnabled(estado);
-        b.etUso.setEnabled(estado);
-        b.etTipo.setEnabled(estado);
+        b.SpinnerUso.setEnabled(estado);
+        b.SpinnerTipo.setEnabled(estado);
         b.etAmbientes.setEnabled(estado);
         b.etSuperficie.setEnabled(estado);
         b.etLatitud.setEnabled(estado);
