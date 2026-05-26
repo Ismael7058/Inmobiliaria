@@ -92,6 +92,9 @@ public class PerfilViewModel extends AndroidViewModel {
         propietarioEditado.setDni(dniInt);
         propietarioEditado.setTelefono(telefono);
         propietarioEditado.setEmail(email);
+        propietarioEditado.setClave(null);
+
+
 
         Propietario actual = propietarioMutable.getValue();
         if (actual == null || actual.equals(propietarioEditado)) {

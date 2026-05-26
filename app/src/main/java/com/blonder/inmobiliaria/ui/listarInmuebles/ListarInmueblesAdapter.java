@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -24,10 +23,16 @@ import java.util.List;
 public class ListarInmueblesAdapter extends RecyclerView.Adapter<ListarInmueblesAdapter.ViewHolerInmueble> {
     private List<Inmueble> inmuebleList;
     private LayoutInflater inflater;
+    private OnItemClickListener listener;
 
-    public ListarInmueblesAdapter(List<Inmueble> inmuebleList, LayoutInflater inflater) {
+    public interface OnItemClickListener {
+        void onItemClick(Inmueble inmueble);
+    }
+
+    public ListarInmueblesAdapter(List<Inmueble> inmuebleList, LayoutInflater inflater, OnItemClickListener listener) {
         this.inmuebleList = inmuebleList;
         this.inflater = inflater;
+        this.listener = listener;
     }
 
 
@@ -55,12 +60,11 @@ public class ListarInmueblesAdapter extends RecyclerView.Adapter<ListarInmuebles
         holder.contenedor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "Accion para rediregir a detalle", Toast.LENGTH_SHORT).show();
+                if (listener != null) {
+                    listener.onItemClick(inmueble);
+                }
             }
         });
-
-
-
     }
 
     @Override
@@ -81,8 +85,5 @@ public class ListarInmueblesAdapter extends RecyclerView.Adapter<ListarInmuebles
             direccion = binding.direccion;
             contenedor = binding.contenedor;
         }
-
-
-
     }
 }

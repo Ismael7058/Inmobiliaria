@@ -60,7 +60,9 @@ public class ApiClient {
         /// Registra un nuevo inmueble con imagen.
         @Multipart
         @POST("/api/Inmuebles/cargar")
-        Call<Inmueble> cargarInmueble(@Header("Authorization") String token, @Part MultipartBody.Part imagen, @Part("inmueble") RequestBody inmuebleJson);//queda ver si esta bien este asi
+        Call<Inmueble> cargarInmueble(@Header("Authorization") String token,
+                                      @Part MultipartBody.Part imagen,
+                                      @Part("inmueble") RequestBody inmuebleJson);//queda ver si esta bien este asi
 
         /// Actualiza la información de un inmueble existente.
         @PUT("/api/Inmuebles/actualizar")
