@@ -49,13 +49,7 @@ public class InmuebleFragment extends Fragment {
         b = FragmentInmuebleBinding.inflate(inflater, container, false);
         vm = new ViewModelProvider(this).get(InmuebleViewModel.class);
         abrirGaleria();
-        ///  Listener para abrir la galeria del telefono
-        b.ivImagenInmueble.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                activityResultLauncher.launch(intent);
-            }
-        });
+
         ///  Observer que carga la imagen en la vista
         vm.getImagenUri().observe(getViewLifecycleOwner(), new Observer<Uri>() {
             @Override
@@ -144,6 +138,13 @@ public class InmuebleFragment extends Fragment {
             setEnabledSupreme(true, true);
             b.etDireccion.requestFocus();
             setVisibleSupreme(3, false);
+            ///  Listener para abrir la galeria del telefono
+            b.ivImagenInmueble.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    activityResultLauncher.launch(intent);
+                }
+            });
             return b.getRoot();
         }
         //Modo Editar
