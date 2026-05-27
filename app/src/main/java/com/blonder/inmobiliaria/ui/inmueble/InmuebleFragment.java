@@ -155,7 +155,7 @@ public class InmuebleFragment extends Fragment {
             return b.getRoot();
         }
         vm.cargarInmueble(inmueble);
-        setEnabledSupreme(false,false);
+        setEnabledSupreme(false,inmueblesNoDisponibles);
         setVisibleSupreme(1,inmueblesNoDisponibles);
         return b.getRoot();
     }

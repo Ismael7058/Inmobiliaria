@@ -7,7 +7,7 @@ public class Contrato
     private int idContrato;
     private Date fechaInicio;
     private Date fechaFinalizacion;
-    private double monto;
+    private double montoAlquiler;
     private boolean estado;
     private int idInquilino;
     private int idInmueble;
@@ -22,7 +22,7 @@ public class Contrato
         this.idContrato = idContrato;
         this.fechaInicio = fechaInicio;
         this.fechaFinalizacion = fechaFinalizacion;
-        this.monto = monto;
+        this.montoAlquiler = monto;
         this.estado = estado;
         this.idInquilino = idInquilino;
         this.idInmueble = idInmueble;
@@ -54,12 +54,12 @@ public class Contrato
         this.fechaFinalizacion = fechaFinalizacion;
     }
 
-    public double getMonto() {
-        return monto;
+    public double getMontoAlquiler() {
+        return montoAlquiler;
     }
 
-    public void setMonto(double monto) {
-        this.monto = monto;
+    public void setMontoAlquiler(double monto) {
+        this.montoAlquiler = monto;
     }
 
     public boolean isEstado() {
@@ -108,7 +108,7 @@ public class Contrato
                 "idContrato=" + idContrato +
                 ", fechaInicio=" + fechaInicio +
                 ", fechaFinalizacion=" + fechaFinalizacion +
-                ", monto=" + monto +
+                ", monto=" + montoAlquiler +
                 ", estado=" + estado +
                 ", idInquilino=" + idInquilino +
                 ", idInmueble=" + idInmueble +
