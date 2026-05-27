@@ -1,6 +1,8 @@
 package com.blonder.inmobiliaria.Models;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class Contrato
 {
@@ -39,9 +41,16 @@ public class Contrato
     }
 
     public Date getFechaInicio() {
+
         return fechaInicio;
     }
-
+    public String getFechaInicioFormateada() {
+        if (this.fechaInicio == null) {
+            return "";
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        return simpleDateFormat.format(this.fechaInicio);
+    }
     public void setFechaInicio(Date fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
@@ -49,7 +58,13 @@ public class Contrato
     public Date getFechaFinalizacion() {
         return fechaFinalizacion;
     }
-
+    public String getFechaFinalizacionFormateada() {
+        if (this.fechaFinalizacion == null) {
+            return "";
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        return simpleDateFormat.format(this.fechaFinalizacion);
+    }
     public void setFechaFinalizacion(Date fechaFinalizacion) {
         this.fechaFinalizacion = fechaFinalizacion;
     }

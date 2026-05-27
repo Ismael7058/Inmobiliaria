@@ -18,6 +18,8 @@ import com.blonder.inmobiliaria.Models.Contrato;
 import com.blonder.inmobiliaria.R;
 import com.blonder.inmobiliaria.databinding.FragmentContratoBinding;
 
+import java.util.Date;
+
 public class ContratoFragment extends Fragment {
 
     private ContratoViewModel mViewModel;
@@ -43,8 +45,9 @@ public class ContratoFragment extends Fragment {
         mViewModel.getContratoMutableLiveData().observe(getViewLifecycleOwner(), new Observer<Contrato>() {
             @Override
             public void onChanged(Contrato contrato) {
-                binding.etFechaInicio.setText(contrato.getFechaInicio().toString());
-                binding.etFechaFinalizacion.setText(contrato.getFechaFinalizacion().toString());
+                binding.etDireccionInmueble.setText(contrato.getInmueble().getDireccion());
+                binding.etFechaInicio.setText(contrato.getFechaInicioFormateada() );
+                binding.etFechaFinalizacion.setText(contrato.getFechaFinalizacionFormateada());
                 binding.etMontoAlquiler.setText(String.valueOf(contrato.getMontoAlquiler()));
             }
         });
