@@ -69,8 +69,11 @@ public class ListarInmueblesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 binding.btnDisponibles.setEnabled(true);
+                binding.btnDisponibles.setBackgroundColor(getResources().getColor(R.color.colorSecondary));
                 binding.btnTodos.setEnabled(false);
+                binding.btnTodos.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 viewModel.setListaDisponibles(true);
+
             }
         });
 
@@ -78,7 +81,9 @@ public class ListarInmueblesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 binding.btnDisponibles.setEnabled(false);
+                binding.btnDisponibles.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 binding.btnTodos.setEnabled(true);
+                binding.btnTodos.setBackgroundColor(getResources().getColor(R.color.colorSecondary));
                 viewModel.setListaDisponibles(false);
             }
         });
@@ -90,6 +95,8 @@ public class ListarInmueblesFragment extends Fragment {
             }
         });
 
+        binding.btnTodos.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        binding.btnDisponibles.setBackgroundColor(getResources().getColor(R.color.colorSecondary));
         viewModel.setListaDisponibles(true);
         return binding.getRoot();
     }
