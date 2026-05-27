@@ -104,7 +104,7 @@ public class InmuebleFragment extends Fragment {
         /// Listener del Boton Guardar
         b.btnGuardarInmueble.setOnClickListener(v -> {
             setEnabledSupreme(false,false);
-            setVisibleSupreme(1);
+            setVisibleSupreme(1, true);
             Toast.makeText(getContext(), "Lógica para guardar cambios", Toast.LENGTH_SHORT).show();
         });
         /// Listener del CheckBox para cambiar la disponibilidad
