@@ -53,7 +53,10 @@ public class ListarInmueblesFragment extends Fragment {
                     @Override
                     public void onItemClick(Inmueble inmueble) {
                         Bundle bundle = new Bundle();
+
                         bundle.putSerializable("inmueble", inmueble);
+                        bundle.putBoolean("inmueblesNoDisponibles",
+                                viewModel.getListaDisponibles().getValue());
                         assert getView() != null;
                         Navigation.findNavController(getView()).navigate(R.id.nav_inmuebleReal, bundle);
                     }

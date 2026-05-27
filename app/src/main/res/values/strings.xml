@@ -40,6 +40,7 @@
     <string name="btn_editar">Editar</string>
     <string name="btn_guardar">Guardar</string>
     <string name="btn_crear">Crear</string>
+    <string name="btn_vercontrato">Ver Contrato</string>
 
     <string name="placeholder_nombre">Luis...</string>
     <string name="placeholder_apellido">Mercado...</string>

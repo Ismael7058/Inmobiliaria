@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,10 +97,10 @@ public class InmuebleFragment extends Fragment {
             );
         });
         /// Listener del Boton Actualizar
-        b.btnEditarInmueble.setOnClickListener(v -> {
-            setEnabledSupreme(true, true);
-            setVisibleSupreme(2);
-        });
+//        b.btnEditarInmueble.setOnClickListener(v -> {
+//            setEnabledSupreme(true, true);
+//            setVisibleSupreme(2);
+//        });
         /// Listener del Boton Guardar
         b.btnGuardarInmueble.setOnClickListener(v -> {
             Toast.makeText(getContext(), "Lógica para guardar cambios", Toast.LENGTH_SHORT).show();
@@ -110,6 +111,14 @@ public class InmuebleFragment extends Fragment {
             public void onClick(View view) {
                 boolean checked = b.cbDisponible.isChecked();
                 vm.actualizarDisponible(checked);
+            }
+        });
+        b.btnVerContrato.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("idInmueble", vm.getInmueble().getValue().getIdInmueble());
+                Navigation.findNavController(view).navigate(R.id.nav_contrato, bundle);
             }
         });
         vm.getGuardadoExitoso().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
@@ -132,18 +141,20 @@ public class InmuebleFragment extends Fragment {
         if (bundle == null || !bundle.containsKey("inmueble")) {
             setEnabledSupreme(true, true);
             b.etDireccion.requestFocus();
-            setVisibleSupreme(3);
+            setVisibleSupreme(3, false);
             return b.getRoot();
         }
         //Modo Editar
         Inmueble inmueble = bundle.getSerializable("inmueble", Inmueble.class);
+        boolean inmueblesNoDisponibles = bundle.getBoolean("inmueblesNoDisponibles");
+        Log.d("Inmueble", "" + inmueble);
         if (inmueble == null) {
             Toast.makeText(getContext(), "Error al cargar el inmueble", Toast.LENGTH_SHORT).show();
             return b.getRoot();
         }
         vm.cargarInmueble(inmueble);
         setEnabledSupreme(false,false);
-        setVisibleSupreme(1);
+        setVisibleSupreme(1,inmueblesNoDisponibles);
         return b.getRoot();
     }
 
@@ -158,15 +169,18 @@ public class InmuebleFragment extends Fragment {
         b.etLatitud.setEnabled(estado);
         b.etLongitud.setEnabled(estado);
         b.etPrecio.setEnabled(estado);
-        if(afectarCbDisponible) //Habilita campo disponible
+        if( afectarCbDisponible) //Habilita campo disponible
             b.cbDisponible.setEnabled(estado);
+
         b.cbContratoVigente.setEnabled(estado);//falta ver como se comporta el back del contrato
     }
 
     //Funcion auxiliar para cambiar la visibilidad de los botones
-    private void setVisibleSupreme(int eleccion) {
+    private void setVisibleSupreme(int eleccion, boolean verificarContrato) {
         ///  Invierto el valor para que no se muestre ya que no existe el editar inmueble
         b.btnEditarInmueble.setVisibility(eleccion == 1 ? GONE : VISIBLE);
+        if(!verificarContrato)
+            b.btnVerContrato.setVisibility(eleccion == 1 ? VISIBLE : GONE);
         b.btnGuardarInmueble.setVisibility(eleccion == 2 ? VISIBLE : GONE);
         b.btnCrearInmueble.setVisibility(eleccion == 3 ? VISIBLE : GONE);
     }
