@@ -1,14 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.contrato.ContratoFragment"
-    android:background="@color/colorBackground">
+    android:background="@color/colorBackground"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:context=".ui.inmueble.InmuebleFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-</FrameLayout>
+        <EditText
+            android:id="@+id/etFechaFinalizacion"
+            android:layout_width="211dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="99dp"
+            android:layout_marginTop="44dp"
+            android:layout_marginEnd="103dp"
+            android:ems="10"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:text="Fecha Fin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etFechaInicio" />
+
+        <EditText
+            android:id="@+id/etMontoAlquiler"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="98dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginEnd="103dp"
+            android:ems="10"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:text="Monto Alquiler"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etFechaFinalizacion" />
+
+        <EditText
+            android:id="@+id/etFechaInicio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="96dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="105dp"
+            android:ems="10"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:text="Fecha Inicio"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btnVerInquilino"
+            android:layout_width="265dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="60dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:padding="12dp"
+            android:text="@string/btn_verInquilino"
+            android:textColor="@color/colorText"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etMontoAlquiler" />
+
+        <Button
+            android:id="@+id/btnVerPagos"
+            android:layout_width="276dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="52dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:padding="12dp"
+            android:text="@string/btn_verPagos"
+            android:textColor="@color/colorText"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnVerInquilino" />
+
+        <TextView
+            android:id="@+id/tvFechaInicio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="99dp"
+            android:layout_marginTop="36dp"
+            android:layout_marginEnd="255dp"
+            android:layout_marginBottom="5dp"
+            android:text="Fecha de Inicio"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toTopOf="@+id/etFechaInicio"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.081"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/tvFechaFin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="102dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="251dp"
+            android:layout_marginBottom="5dp"
+            android:text="Fecha de Fin"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toTopOf="@+id/etFechaFinalizacion"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.142"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etFechaInicio"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/tvMontoAlquiler"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="104dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginEnd="250dp"
+            android:layout_marginBottom="5dp"
+            android:text="Monto de Alquiler"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toTopOf="@+id/etMontoAlquiler"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.094"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etFechaFinalizacion"
+            app:layout_constraintVertical_bias="1.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>

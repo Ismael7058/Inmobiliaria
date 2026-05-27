@@ -41,6 +41,8 @@
     <string name="btn_guardar">Guardar</string>
     <string name="btn_crear">Crear</string>
     <string name="btn_vercontrato">Ver Contrato</string>
+    <string name="btn_verInquilino">Ver Inquilino</string>
+    <string name="btn_verPagos">Ver Pagos</string>
 
     <string name="placeholder_nombre">Luis...</string>
     <string name="placeholder_apellido">Mercado...</string>
