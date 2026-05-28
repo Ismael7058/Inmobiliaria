@@ -17,6 +17,7 @@
     <string name="menu_inquilinos">Inquilinos</string>
     <string name="menu_contratos">Contratos</string>
     <string name="menu_logout">Logout</string>
+    <string name="menu_pagos">Pagos</string>
 
     <string name="lorem_ipsum_title">Lorem Ipsum"</string>
     <string name="lorem_ipsum">Lorem Ipsum is simply placeholder text of the printing and
@@ -79,6 +80,7 @@
     <string name="placeholder_latitud">-34.123548</string>
     <string name="placeholder_longitud">-66.456784</string>
     <string name="placeholder_precio">500000</string>
+    <string name="sin_pagos">No se encontraron pagos</string>
     <string-array name="opciones_uso">
         <item>Residencial</item>
         <item>Comercial</item>

@@ -3,17 +3,12 @@ package com.blonder.inmobiliaria.ui.contrato;
 import android.app.Application;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-
 import com.blonder.inmobiliaria.Models.Contrato;
 import com.blonder.inmobiliaria.request.ApiClient;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -64,5 +59,12 @@ public class ContratoViewModel extends AndroidViewModel {
                 setErrorMessage("Error al cargar el contrato");
             }
         });
+    }
+
+    public Integer getIdContrato(){
+        if (contratoMutableLiveData.getValue() == null){
+            return null;
+        }
+        return contratoMutableLiveData.getValue().getIdContrato();
     }
 }

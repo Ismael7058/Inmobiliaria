@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +50,17 @@ public class ContratoFragment extends Fragment {
                 binding.etFechaInicio.setText(contrato.getFechaInicioFormateada() );
                 binding.etFechaFinalizacion.setText(contrato.getFechaFinalizacionFormateada());
                 binding.etMontoAlquiler.setText(String.valueOf(contrato.getMontoAlquiler()));
+            }
+        });
+
+        ///  Accion para ver los pagos de un contrato
+        binding.btnVerPagos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("idContrato", mViewModel.getIdContrato());
+                assert getView() != null;
+                Navigation.findNavController(getView()).navigate(R.id.nav_pagos, bundle);
             }
         });
         mViewModel.cargarContrato(bundle);

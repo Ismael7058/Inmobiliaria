@@ -10,5 +10,6 @@
     <color name="colorSecondary">#ED0F0F0F</color>
     <color name="colorHeader">#070707</color>
     <color name="colorTrasnparente">#99000000</color>
+    <color name="colorDanger">#99FF0000</color>
 
 </resources>
