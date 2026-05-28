@@ -16,7 +16,7 @@
     <string name="menu_inmuebles">Inmuebles</string>
     <string name="menu_inquilinos">Inquilinos</string>
     <string name="menu_contratos">Contratos</string>
-    <string name="menu_logout">Logout</string>
+    <string name="menu_logout">Cerrar Sesión</string>
     <string name="menu_pagos">Pagos</string>
 
     <string name="lorem_ipsum_title">Lorem Ipsum"</string>
