@@ -19,8 +19,6 @@ import com.blonder.inmobiliaria.Models.Contrato;
 import com.blonder.inmobiliaria.R;
 import com.blonder.inmobiliaria.databinding.FragmentContratoBinding;
 
-import java.util.Date;
-
 public class ContratoFragment extends Fragment {
 
     private ContratoViewModel mViewModel;
@@ -47,7 +45,7 @@ public class ContratoFragment extends Fragment {
             @Override
             public void onChanged(Contrato contrato) {
                 binding.etDireccionInmueble.setText(contrato.getInmueble().getDireccion());
-                binding.etFechaInicio.setText(contrato.getFechaInicioFormateada() );
+                binding.etFechaInicio.setText(contrato.getFechaInicioFormateada());
                 binding.etFechaFinalizacion.setText(contrato.getFechaFinalizacionFormateada());
                 binding.etMontoAlquiler.setText(String.valueOf(contrato.getMontoAlquiler()));
             }
@@ -63,8 +61,17 @@ public class ContratoFragment extends Fragment {
                 Navigation.findNavController(getView()).navigate(R.id.nav_pagos, bundle);
             }
         });
+        /// Boton ver inquilino
+        binding.btnVerInquilino.setOnClickListener(v -> {
+            Contrato contrato = mViewModel.getContratoMutableLiveData().getValue();
+            if (contrato != null && contrato.getInquilino() != null) {
+                Bundle bund = new Bundle();
+                bund.putSerializable("inquilino", contrato.getInquilino());
+                Navigation.findNavController(v).navigate(R.id.nav_inquilino, bund);
+            }
+        });
         mViewModel.cargarContrato(bundle);
-        return  binding.getRoot();
+        return binding.getRoot();
     }
 
 }
