@@ -60,9 +60,7 @@ public class ApiClient {
         /// Registra un nuevo inmueble con imagen.
         @Multipart
         @POST("/api/Inmuebles/cargar")
-        Call<Inmueble> cargarInmueble(@Header("Authorization") String token,
-                                      @Part MultipartBody.Part imagen,
-                                      @Part("inmueble") RequestBody inmuebleJson);//queda ver si esta bien este asi
+        Call<Inmueble> cargarInmueble(@Header("Authorization") String token, @Part MultipartBody.Part imagen, @Part("inmueble") RequestBody inmuebleJson);//queda ver si esta bien este asi
 
         /// Actualiza la información de un inmueble existente.
         @PUT("/api/Inmuebles/actualizar")
@@ -90,5 +88,12 @@ public class ApiClient {
     public static String leerToken(Context context) {
         SharedPreferences sp = context.getSharedPreferences("token.xml", Context.MODE_PRIVATE);
         return sp.getString("token", null);
+    }
+
+    public static void eliminarToken(Context context) {
+        SharedPreferences sp = context.getSharedPreferences("token.xml", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.remove("token");
+        editor.apply();
     }
 }

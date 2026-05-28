@@ -1,5 +1,6 @@
 package com.blonder.inmobiliaria.ui.home;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -21,27 +22,35 @@ public class HomeFragment extends Fragment {
 
     private HomeViewModel mViewModel;
     private FragmentHomeBinding fragmentHomeBinding;
+
     public static HomeFragment newInstance() {
         return new HomeFragment();
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false);
         mViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
-        mViewModel.getMapaActual().observe(this, new Observer<HomeViewModel.MapaActual>() {
+        mViewModel.getMapaActual().observe(getViewLifecycleOwner(), new Observer<HomeViewModel.MapaActual>() {
             @Override
             public void onChanged(HomeViewModel.MapaActual mapaActual) {
-                SupportMapFragment mapFragment =
-                        (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapa);
-                if(mapFragment != null){
+                SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapa);
+                if (mapFragment != null) {
                     mapFragment.getMapAsync(mapaActual);
                 }
             }
         });
         mViewModel.cargarMapa();
+        // Manejar el retroceso
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                requireActivity().finishAffinity();
+            }
+        };
+        // Agregar el callback al sistema
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
         return fragmentHomeBinding.getRoot();
     }
 }
