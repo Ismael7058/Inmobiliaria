@@ -58,13 +58,15 @@ public class HomeViewModel extends AndroidViewModel implements SensorEventListen
     private MutableLiveData<Intent> intentMutable = new MutableLiveData<>();
     private SensorManager sensorManager;
     private Sensor sensor;
-    private float SHAKE_THRESHOLD; // Sensibilidad (ajusta según necesites)
+    private float SHAKE_THRESHOLD; // Sensibilidad
     private long lastUpdate = 0;
     public LiveData<Intent> getAbrirTelefono(){
         return intentMutable;
     }
+    public void limpiarIntent() {
+        intentMutable.setValue(null);
+    }
 
-    // Métodos para controlar el ciclo de vida desde el Fragment/Activity
     public void comenzarDeteccion() {
         if (sensor != null) {
             sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_UI);
@@ -84,12 +86,12 @@ public class HomeViewModel extends AndroidViewModel implements SensorEventListen
             float y = event.values[1];
             float z = event.values[2];
 
-            // Calculamos la aceleración total restando la gravedad aproximadamente
+            // Calculamos la aceleracion total restando la gravedad
             double acceleration = Math.sqrt(x * x + y * y + z * z) - SensorManager.GRAVITY_EARTH;
 
             if (acceleration > SHAKE_THRESHOLD) {
                 long curTime = System.currentTimeMillis();
-                // Evitar múltiples disparos seguidos (esperar 1 segundo entre detecciones)
+                // Evitar multiples disparos seguidos
                 if ((curTime - lastUpdate) > 1000) {
                     lastUpdate = curTime;
                     dispararLlamada();
@@ -99,8 +101,7 @@ public class HomeViewModel extends AndroidViewModel implements SensorEventListen
     }
 
     private void dispararLlamada() {
-        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:123456789"));
-        // Importante: No registres el listener aquí, ya está registrado
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:2664553747"));
         intentMutable.setValue(intent);
     }
 

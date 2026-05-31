@@ -65,18 +65,25 @@ public class HomeFragment extends Fragment {
         mViewModel.getAbrirTelefono().observe(getViewLifecycleOwner(), new Observer<Intent>() {
             @Override
             public void onChanged(Intent intent) {
-                startActivity(intent);
+                if (intent != null) {
+                    startActivity(intent);
+                    mViewModel.limpiarIntent();
+                }
             }
         });
-
-        // Escuchar el evento de sacudida
-        mViewModel.comenzarDeteccion();
 
         return fragmentHomeBinding.getRoot();
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mViewModel.comenzarDeteccion();
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
+        mViewModel.detenerDeteccion();
     }
 }
