@@ -81,6 +81,7 @@
     <string name="placeholder_longitud">-66.456784</string>
     <string name="placeholder_precio">500000</string>
     <string name="sin_pagos">No se encontraron pagos</string>
+    <string name="mensage_flotante">📞 Sacudir para llamar</string>
     <string-array name="opciones_uso">
         <item>Residencial</item>
         <item>Comercial</item>
