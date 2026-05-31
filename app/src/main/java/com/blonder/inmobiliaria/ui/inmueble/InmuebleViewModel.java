@@ -8,26 +8,20 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
-import android.app.Activity.*;
+
 import androidx.activity.result.ActivityResult;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.blonder.inmobiliaria.Models.Inmueble;
-import com.blonder.inmobiliaria.Models.Inquilino;
 import com.blonder.inmobiliaria.request.ApiClient;
-import com.google.android.gms.common.api.ResultTransform;
 import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -42,44 +36,52 @@ public class InmuebleViewModel extends AndroidViewModel {
     private MutableLiveData<String> messageToView = new MutableLiveData<>();
     private MutableLiveData<Boolean> guardadoExitoso = new MutableLiveData<>();
     private Context context;
+
     public InmuebleViewModel(@NonNull Application application) {
         super(application);
         context = application.getApplicationContext();
         guardadoExitoso.setValue(false);
     }
-    public LiveData<Uri> getImagenUri(){
 
+    public LiveData<Uri> getImagenUri() {
         return mImageUri;
     }
+
     public LiveData<Inmueble> getInmueble() {
         if (mInmueble == null) {
             mInmueble = new MutableLiveData<>();
         }
         return mInmueble;
     }
-    public void setGuardadoExitoso(boolean guardadoExitoso){
+
+    public void setGuardadoExitoso(boolean guardadoExitoso) {
         this.guardadoExitoso.setValue(guardadoExitoso);
     }
+
     public LiveData<Boolean> getGuardadoExitoso() {
         return guardadoExitoso;
     }
+
     public void cargarInmueble(Inmueble inmueble) {
         mInmueble.setValue(inmueble);
     }
+
     public LiveData<String> getMessageToView() {
         return messageToView;
     }
+
     public void setMessageToView(String message) {
         messageToView.setValue(message);
     }
-    public void actualizarDisponible(boolean disponible){
+
+    public void actualizarDisponible(boolean disponible) {
         Inmueble inmuebleExtracted = mInmueble.getValue();
-        if(inmuebleExtracted == null){
+        if (inmuebleExtracted == null) {
             return;
         }
         String token = ApiClient.leerToken(context);
         inmuebleExtracted.setDisponible(disponible);
-        if( token == null){
+        if (token == null) {
             setMessageToView("No hay token");
             return;
         }
@@ -88,228 +90,130 @@ public class InmuebleViewModel extends AndroidViewModel {
         call.enqueue(new Callback<Inmueble>() {
             @Override
             public void onResponse(Call<Inmueble> call, Response<Inmueble> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     Inmueble inmueble = response.body();
-                    if(inmueble == null){
+                    if (inmueble == null) {
                         setMessageToView("El inmueble no existe");
                         return;
                     }
                     setMessageToView("El inmueble se edito correctamente");
-                    Log.d("Inmueble", ""+inmueble.isDisponible());
+                    Log.d("Inmueble", "" + inmueble.isDisponible());
                     mInmueble.postValue(inmueble);
-                }else{
+                } else {
                     setMessageToView("Error al editar el inmueble");
                 }
             }
 
             @Override
-            public void onFailure(Call<Inmueble> call, Throwable t) {
-               setMessageToView("Error al editar el inmueble: "+ t.getMessage());
+            public void onFailure(@NonNull Call<Inmueble> call, @NonNull Throwable t) {
+                setMessageToView("Error al editar el inmueble: " + t.getMessage());
             }
         });
-
     }
-    public void recibirFotos(ActivityResult result){
-        if(result.getResultCode() == Activity.RESULT_OK){
+
+    public void recibirFotos(ActivityResult result) {
+        if (result.getResultCode() == Activity.RESULT_OK) {
             Intent data = result.getData();
-            Uri uri = data.getData();
-            mImageUri.setValue(uri);
+            if (data != null) {
+                Uri uri = data.getData();
+                mImageUri.setValue(uri);
+            }
         }
     }
 
-    public void registrarInmueble(
-            String direccion,
-            String uso,
-            String tipo,
-            String ambientes,
-            String superficie,
-            String latitud,
-            String longitud,
-            String valor,
-            boolean disponible,
-
-            boolean tieneContratoVigente
-    ) {
-        /// Arreglo que contiene los parametros de los numeros enteros enviados, para que sea mas
-        /// legible
-        ArrayList<String> numerosEnteros = new ArrayList<>();
-        numerosEnteros.add(ambientes);
-        numerosEnteros.add(superficie);
-        /// Arreglo que contiene los numeros double para que sea mas legible
-        ArrayList<String> numerosDouble = new ArrayList<>();
-        numerosDouble.add(latitud);
-        numerosDouble.add(longitud);
-        numerosDouble.add(valor);
-
-        ResultadoValidacion resultadoValidacion = validarCamposNumericos(numerosEnteros,numerosDouble);
-
-        if (    direccion == null
-                || direccion.isEmpty()
-                || uso == null
-                || uso.isEmpty()
-                || tipo == null
-                || tipo.isEmpty()
-                || !resultadoValidacion.isValido()
-        ) {
-            setMessageToView("Todos los campos son obligatorios");
-            setGuardadoExitoso(false);
+    public void registrarInmueble(String direccion, String uso, String tipo, String ambientes, String superficie, String latitud, String longitud, String valor, boolean disponible) {
+        if (direccion == null || direccion.trim().isEmpty() || uso == null || uso.trim().isEmpty() || tipo == null || tipo.trim().isEmpty()) {
+            setErrorValidacion();
             return;
         }
-//        if(mImageUri.getValue() == null) {
-//            setMessageToView("Debe seleccionar una imagen");
-//            return;
-//        }
-        //////////////////////////////////////
+
+        Integer nAmbientes = parseInteger(ambientes);
+        Integer nSuperficie = parseInteger(superficie);
+        Double dLatitud = parseDouble(latitud, true);
+        Double dLongitud = parseDouble(longitud, true);
+        Double dValor = parseDouble(valor, false);
+
+        if (nAmbientes == null || nSuperficie == null || dLatitud == null || dLongitud == null || dValor == null) {
+            setErrorValidacion();
+            return;
+        }
+
         Inmueble inmuebleCreated = new Inmueble();
         inmuebleCreated.setDireccion(direccion);
         inmuebleCreated.setUso(uso);
         inmuebleCreated.setTipo(tipo);
+        inmuebleCreated.setAmbientes(nAmbientes);
+        inmuebleCreated.setSuperficie(nSuperficie);
+        inmuebleCreated.setLatitud(dLatitud);
+        inmuebleCreated.setLongitud(dLongitud);
+        inmuebleCreated.setValor(dValor);
         inmuebleCreated.setDisponible(disponible);
-        inmuebleCreated.setTieneContratoVigente(tieneContratoVigente);
-        ///////////////////////////////
-        /// //SETEAR VALORES INT//////
-        ///////////////////////////////
-        inmuebleCreated.setAmbientes(resultadoValidacion.getNumerosEnteros().get(0));
-        inmuebleCreated.setSuperficie(resultadoValidacion.getNumerosEnteros().get(1));
-        ////////////////////////////////
-        /////SETEAR VALORES Double//////
-        ////////////////////////////////
-        inmuebleCreated.setLatitud(resultadoValidacion.getNumerosFlotantes().get(0));
-        inmuebleCreated.setLongitud(resultadoValidacion.getNumerosFlotantes().get(1));
-        inmuebleCreated.setValor(resultadoValidacion.getNumerosFlotantes().get(2));
-        ///////////////////////////////
 
         String token = ApiClient.leerToken(context);
-        if( token == null){
+        if (token == null) {
             setMessageToView("No hay token");
             setGuardadoExitoso(false);
             return;
         }
-        byte[] foto = transformarImagen(); /// Se obtiene los bytes de la imagen
-        String inmuebleJson = new Gson().toJson(inmuebleCreated); /// Se convierte el inmueble a json
-        RequestBody inmuebleBody = RequestBody.create(MediaType.parse("application/json; " +
-                "charset=utf-8"), inmuebleJson); /// Se crea el request body del inmueble
-        RequestBody fotoBody = RequestBody.create(MediaType.parse("image/jpeg"), foto); /// Se crea el request body de la imagen
-        MultipartBody.Part imagenPart = MultipartBody.Part.createFormData("imagen", "imagen.jpg",
-                fotoBody);/// Se crea el multipart body de la imagen
-        ApiClient.MiServicioInmobiliaria service = ApiClient.getServicio(); /// Se crea el servicio
-        service.cargarInmueble(token,imagenPart,inmuebleBody).enqueue(new Callback<Inmueble>() {
+
+        byte[] foto = transformarImagen();
+        String inmuebleJson = new Gson().toJson(inmuebleCreated);
+        RequestBody inmuebleBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inmuebleJson);
+        RequestBody fotoBody = RequestBody.create(MediaType.parse("image/jpeg"), foto);
+        MultipartBody.Part imagenPart = MultipartBody.Part.createFormData("imagen", "imagen.jpg", fotoBody);
+
+        ApiClient.getServicio().cargarInmueble(token, imagenPart, inmuebleBody).enqueue(new Callback<Inmueble>() {
             @Override
             public void onResponse(Call<Inmueble> call, Response<Inmueble> response) {
-                if(response.isSuccessful()){
-                    setMessageToView("El inmueble se agrego correctamente");
-                    setGuardadoExitoso(true);
-                }else{
+                if (!response.isSuccessful()) {
                     setMessageToView("Error al agregar el inmueble");
                     setGuardadoExitoso(false);
+                    return;
                 }
+
+                setMessageToView("El inmueble se agrego correctamente");
+                setGuardadoExitoso(true);
             }
 
-             @Override
-             public void onFailure(Call<Inmueble> call, Throwable t) {
-                setMessageToView("Error al agregar el inmueble: "+ t.getMessage());
+            @Override
+            public void onFailure(@NonNull Call<Inmueble> call, Throwable t) {
+                setMessageToView("Error al agregar el inmueble: " + t.getMessage());
                 setGuardadoExitoso(false);
-             }
-         });
-    }
-    public ResultadoValidacion validarCamposNumericos(List<String> numerosEnteros, List<String> numerosFlotantes){
-        ResultadoValidacion resultadoValidacion = new ResultadoValidacion();
-        List<Integer> numerosEnterosValidos = new ArrayList<>();
-        List<Double> numerosFlotantesValidos = new ArrayList<>();
-        ///Verifica que se pueda parsear a entero y que no sea menor a 0
-
-        for (String numero : numerosEnteros) {
-            try {
-                int numeroParseado = Integer.parseInt(numero);
-                if(numeroParseado < 0) {
-                    resultadoValidacion.setValido(false);
-                    return resultadoValidacion;
-                }
-                numerosEnterosValidos.add(numeroParseado);
-            } catch (NumberFormatException e) {
-                resultadoValidacion.setValido(false);
-                return resultadoValidacion;
             }
-        }
-        /// Verifica que se pueda parsear a float, no verifica menor a 0 porque longitud y latitud
-        /// puede ser menores a 0
-        /// El condicional que tiene verifica si el atributo "valor" es menor a 0, el mismo se
-        /// envia en la posicion 2 del arreglo cuando es asignado por parametro
-        int contador = 0;
-        for(String numero : numerosFlotantes){
-            try {
-                if(contador == 2) { ///chequear si funciona bien
-                    double numeroParsed = Float.parseFloat(numero);
-                    if(numeroParsed < 0) {
-                        resultadoValidacion.setValido(false);
-                        return resultadoValidacion;
-                    }
-                    numerosFlotantesValidos.add(numeroParsed);
-                    continue;
-                }
-                numerosFlotantesValidos.add(Double.parseDouble(numero));
-                contador++;
-            } catch (NumberFormatException e) {
-                resultadoValidacion.setValido(false);
-                return  resultadoValidacion;
+        });
+    }
+
+    private void setErrorValidacion() {
+        setMessageToView("Complete todos los campos correctamente");
+        setGuardadoExitoso(false);
+    }
+
+    private Integer parseInteger(String value) {
+        try {
+            int n = Integer.parseInt(value);
+            if (n >= 0) {
+                return n;
+            } else {
+                return null;
             }
-        }
-        resultadoValidacion.setValido(true);
-        resultadoValidacion.setNumerosEnteros(numerosEnterosValidos);
-        resultadoValidacion.setNumerosFlotantes(numerosFlotantesValidos);
-        return resultadoValidacion;
-    }
-    /// Clase para guardar los resultados de la validacion de los campos numericos
-    public class ResultadoValidacion{
-        private  List<Integer> numerosEnteros = new ArrayList<>();
-        private  List<Double> numerosFlotantes = new ArrayList<>();
-        private  boolean valido = true;
-        public ResultadoValidacion(){}
-        public ResultadoValidacion(List<Integer> numerosEnteros, List<Double> numerosFlotantes, boolean valido) {
-            this.numerosEnteros = numerosEnteros;
-            this.numerosFlotantes = numerosFlotantes;
-            this.valido = valido;
-        }
-
-        public List<Integer> getNumerosEnteros() {
-            return numerosEnteros;
-        }
-
-        public void setNumerosEnteros(List<Integer> numerosEnteros) {
-            this.numerosEnteros = numerosEnteros;
-        }
-
-        public List<Double> getNumerosFlotantes() {
-            return numerosFlotantes;
-        }
-
-        public void setNumerosFlotantes(List<Double> numerosFlotantes) {
-            this.numerosFlotantes = numerosFlotantes;
-        }
-
-        public boolean isValido() {
-            return valido;
-        }
-
-        public void setValido(boolean valido) {
-            this.valido = valido;
+        } catch (NumberFormatException e) {
+            return null;
         }
     }
-    ///  Funcion para obtener la imagen de la galeria y convertirla a byte array
-//    private byte[] transformarImagen(){
-//        try{
-//            Uri uri = mImageUri.getValue();
-//            //Crea un canal para leer la imagen
-//            InputStream inputStream = getApplication().getContentResolver().openInputStream(uri);
-//            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//            bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
-//            return byteArrayOutputStream.toByteArray();
-//        }catch (FileNotFoundException er){
-//            setMessageToView("No ha seleccionado una foto");
-//            return new byte[]{};
-//        }
-//    }
+
+    private Double parseDouble(String value, boolean permitirNegativo) {
+        try {
+            double d = Double.parseDouble(value);
+            if (permitirNegativo || d >= 0) {
+                return d;
+            } else {
+                return null;
+            }
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
     private byte[] transformarImagen() {
         try {
             Uri uri = mImageUri.getValue();
@@ -331,5 +235,4 @@ public class InmuebleViewModel extends AndroidViewModel {
             return new byte[]{};
         }
     }
-
 }

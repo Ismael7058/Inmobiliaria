@@ -44,6 +44,7 @@ public class InmuebleFragment extends Fragment {
     private FragmentInmuebleBinding b;
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private Intent intent;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         b = FragmentInmuebleBinding.inflate(inflater, container, false);
@@ -64,8 +65,7 @@ public class InmuebleFragment extends Fragment {
 
             b.etDireccion.setText(inmueble.getDireccion());
             b.SpinnerUso.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, new String[]{inmueble.getUso()}));
-            b.SpinnerTipo.setAdapter(new ArrayAdapter<>(requireContext(),
-                    android.R.layout.simple_spinner_item, new String[]{inmueble.getTipo()}));
+            b.SpinnerTipo.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, new String[]{inmueble.getTipo()}));
             b.etAmbientes.setText(String.valueOf(inmueble.getAmbientes()));
             b.etSuperficie.setText(String.valueOf(inmueble.getSuperficie()));
             b.etLatitud.setText(String.valueOf(inmueble.getLatitud()));
@@ -77,18 +77,7 @@ public class InmuebleFragment extends Fragment {
         });
         /// Listener del Boton Crear
         b.btnCrearInmueble.setOnClickListener(v -> {
-            vm.registrarInmueble(
-                    b.etDireccion.getText().toString(),
-                    b.SpinnerUso.getSelectedItem().toString(),
-                    b.SpinnerTipo.getSelectedItem().toString(),
-                    b.etAmbientes.getText().toString(),
-                    b.etSuperficie.getText().toString(),
-                    b.etLatitud.getText().toString(),
-                    b.etLongitud.getText().toString(),
-                    b.etPrecio.getText().toString(),
-                    b.cbDisponible.isChecked(),
-                    b.cbContratoVigente.isChecked()
-            );
+            vm.registrarInmueble(b.etDireccion.getText().toString(), b.SpinnerUso.getSelectedItem().toString(), b.SpinnerTipo.getSelectedItem().toString(), b.etAmbientes.getText().toString(), b.etSuperficie.getText().toString(), b.etLatitud.getText().toString(), b.etLongitud.getText().toString(), b.etPrecio.getText().toString(), b.cbDisponible.isChecked());
         });
         /// Listener del Boton Actualizar
 //        b.btnEditarInmueble.setOnClickListener(v -> {
@@ -97,7 +86,7 @@ public class InmuebleFragment extends Fragment {
 //        });
         /// Listener del Boton Guardar
         b.btnGuardarInmueble.setOnClickListener(v -> {
-            setEnabledSupreme(false,false);
+            setEnabledSupreme(false, false);
             setVisibleSupreme(1, true);
             Toast.makeText(getContext(), "Lógica para guardar cambios", Toast.LENGTH_SHORT).show();
         });
@@ -120,7 +109,7 @@ public class InmuebleFragment extends Fragment {
         vm.getGuardadoExitoso().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-                if(aBoolean){
+                if (aBoolean) {
                     Navigation.findNavController(b.getRoot()).popBackStack();
                 }
             }
@@ -156,8 +145,8 @@ public class InmuebleFragment extends Fragment {
             return b.getRoot();
         }
         vm.cargarInmueble(inmueble);
-        setEnabledSupreme(false,inmueblesNoDisponibles);
-        setVisibleSupreme(1,inmueblesNoDisponibles);
+        setEnabledSupreme(false, inmueblesNoDisponibles);
+        setVisibleSupreme(1, inmueblesNoDisponibles);
         return b.getRoot();
     }
 
@@ -172,7 +161,7 @@ public class InmuebleFragment extends Fragment {
         b.etLatitud.setEnabled(estado);
         b.etLongitud.setEnabled(estado);
         b.etPrecio.setEnabled(estado);
-        if( afectarCbDisponible) //Habilita campo disponible
+        if (afectarCbDisponible) //Habilita campo disponible
             b.cbDisponible.setEnabled(estado);
 
         b.cbContratoVigente.setEnabled(estado);//falta ver como se comporta el back del contrato
@@ -182,22 +171,20 @@ public class InmuebleFragment extends Fragment {
     private void setVisibleSupreme(int eleccion, boolean verificarContrato) {
         ///  Invierto el valor para que no se muestre ya que no existe el editar inmueble
         b.btnEditarInmueble.setVisibility(eleccion == 1 ? GONE : VISIBLE);
-        if(!verificarContrato)
-            b.btnVerContrato.setVisibility(eleccion == 1 ? VISIBLE : GONE);
+        if (!verificarContrato) b.btnVerContrato.setVisibility(eleccion == 1 ? VISIBLE : GONE);
         b.btnGuardarInmueble.setVisibility(eleccion == 2 ? VISIBLE : GONE);
         b.btnCrearInmueble.setVisibility(eleccion == 3 ? VISIBLE : GONE);
     }
+
     ///  Funcion auxiliar para abrir la galeria del telefono y setear la imagen en el mutable
-    private void abrirGaleria(){
+    private void abrirGaleria() {
         intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        activityResultLauncher =
-                registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                        new ActivityResultCallback<ActivityResult>() {
-                            @Override
-                            public void onActivityResult(ActivityResult o) {
-                                vm.recibirFotos(o);
-                            }
-                        }) ;
+        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult o) {
+                vm.recibirFotos(o);
+            }
+        });
 
     }
 }
