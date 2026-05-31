@@ -7,8 +7,10 @@
     <color name="colorPrimary">#59ac6b</color>
     <color name="colorText">#f8fbf8</color>
     <color name="colorBackground">#F5070707</color>
+    <color name="colorBackgroundSecondary">#D82E2E2E</color>
     <color name="colorSecondary">#ED0F0F0F</color>
     <color name="colorHeader">#070707</color>
     <color name="colorTrasnparente">#99000000</color>
+    <color name="colorDanger">#99FF0000</color>
 
 </resources>

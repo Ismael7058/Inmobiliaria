@@ -16,7 +16,8 @@
     <string name="menu_inmuebles">Inmuebles</string>
     <string name="menu_inquilinos">Inquilinos</string>
     <string name="menu_contratos">Contratos</string>
-    <string name="menu_logout">Logout</string>
+    <string name="menu_logout">Cerrar Sesión</string>
+    <string name="menu_pagos">Pagos</string>
 
     <string name="lorem_ipsum_title">Lorem Ipsum"</string>
     <string name="lorem_ipsum">Lorem Ipsum is simply placeholder text of the printing and
@@ -40,6 +41,9 @@
     <string name="btn_editar">Editar</string>
     <string name="btn_guardar">Guardar</string>
     <string name="btn_crear">Crear</string>
+    <string name="btn_vercontrato">Ver Contrato</string>
+    <string name="btn_verInquilino">Ver Inquilino</string>
+    <string name="btn_verPagos">Ver Pagos</string>
 
     <string name="placeholder_nombre">Luis...</string>
     <string name="placeholder_apellido">Mercado...</string>
@@ -76,6 +80,8 @@
     <string name="placeholder_latitud">-34.123548</string>
     <string name="placeholder_longitud">-66.456784</string>
     <string name="placeholder_precio">500000</string>
+    <string name="sin_pagos">No se encontraron pagos</string>
+    <string name="mensage_flotante">📞 Sacudir para llamar</string>
     <string-array name="opciones_uso">
         <item>Residencial</item>
         <item>Comercial</item>

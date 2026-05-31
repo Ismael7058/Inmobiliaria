@@ -46,4 +46,10 @@
         android:name="com.blonder.inmobiliaria.ui.perfilPassword.perfilPasswordFragment"
         android:label="@string/cambiar_contrasena"
         tools:layout="@layout/fragment_perfil_password" />
+    <fragment
+        android:id="@+id/nav_pagos"
+        android:name="com.blonder.inmobiliaria.ui.pagos.PagosFragment"
+        android:label="@string/menu_pagos"
+        tools:layout="@layout/fragment_pagos" />
+
 </navigation>

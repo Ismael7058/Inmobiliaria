@@ -1,13 +1,15 @@
 package com.blonder.inmobiliaria.Models;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class Contrato
 {
     private int idContrato;
     private Date fechaInicio;
     private Date fechaFinalizacion;
-    private double monto;
+    private double montoAlquiler;
     private boolean estado;
     private int idInquilino;
     private int idInmueble;
@@ -22,7 +24,7 @@ public class Contrato
         this.idContrato = idContrato;
         this.fechaInicio = fechaInicio;
         this.fechaFinalizacion = fechaFinalizacion;
-        this.monto = monto;
+        this.montoAlquiler = monto;
         this.estado = estado;
         this.idInquilino = idInquilino;
         this.idInmueble = idInmueble;
@@ -39,9 +41,16 @@ public class Contrato
     }
 
     public Date getFechaInicio() {
+
         return fechaInicio;
     }
-
+    public String getFechaInicioFormateada() {
+        if (this.fechaInicio == null) {
+            return "";
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        return simpleDateFormat.format(this.fechaInicio);
+    }
     public void setFechaInicio(Date fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
@@ -49,17 +58,23 @@ public class Contrato
     public Date getFechaFinalizacion() {
         return fechaFinalizacion;
     }
-
+    public String getFechaFinalizacionFormateada() {
+        if (this.fechaFinalizacion == null) {
+            return "";
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        return simpleDateFormat.format(this.fechaFinalizacion);
+    }
     public void setFechaFinalizacion(Date fechaFinalizacion) {
         this.fechaFinalizacion = fechaFinalizacion;
     }
 
-    public double getMonto() {
-        return monto;
+    public double getMontoAlquiler() {
+        return montoAlquiler;
     }
 
-    public void setMonto(double monto) {
-        this.monto = monto;
+    public void setMontoAlquiler(double monto) {
+        this.montoAlquiler = monto;
     }
 
     public boolean isEstado() {
@@ -108,7 +123,7 @@ public class Contrato
                 "idContrato=" + idContrato +
                 ", fechaInicio=" + fechaInicio +
                 ", fechaFinalizacion=" + fechaFinalizacion +
-                ", monto=" + monto +
+                ", monto=" + montoAlquiler +
                 ", estado=" + estado +
                 ", idInquilino=" + idInquilino +
                 ", idInmueble=" + idInmueble +
